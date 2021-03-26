@@ -10,7 +10,7 @@ Replacement = str(sys.argv[2])
 
 def domain_replace(link, replacement):
 
-    rg = r"\b([a-z0-9]+(-[a-z0-9]+)*\.)+(?!(cgi|html|js|php|pdf|jsp|txt|png|asp|aspx|css|rb|mp4|mpl|svg|log|xml|tar|zip|dat|db|csv|gif|rss|xhtml|ico|tmp|wmv))[a-z]{2,}\b"
+    rg = r"\b([a-z0-9]+(-[a-z0-9]+)*\.)+(?!(cgi|html|js|php|pdf|jsp|txt|png|asp|aspx|css|rb|mp4|mpl|svg|log|xml|tar|zip|dat|db|csv|gif|rss|xhtml|ico|tmp|wmv))[a-z]{2,4}\b"
 
     if "?" not in link:
         return False
