@@ -2,11 +2,25 @@
 # python3 main.py file.txt example.com > result.txt
 #--------------------------------------------------
 
-import sys
+import argparse
 import re
 
-base_file = str(sys.argv[1])
-Replacement = str(sys.argv[2])
+# Processing command line arguments
+parser = argparse.ArgumentParser()
+
+parser.add_argument("-f", help="urls file", dest="file")
+parser.add_argument("-d", help="domains file", dest="domains")
+parser.add_argument("-r", help="replacement name", dest="rname")
+parser.add_argument("-o", help="output file", dest="output")
+parser.add_argument("-v", help="value for domains replace", dest="value")
+
+args = parser.parse_args()
+
+base_file = args.file
+Replacement = args.rname
+domains = args.domains
+output = args.output
+value = args.value
 
 def domain_replace(link, replacement):
 
@@ -36,8 +50,21 @@ def print_url(url, rpl):
     if x != False:
         print(x)
     
-
-if __name__ == "__main__":
+def single_replace():
     with open(base_file) as f:
         for url in f:
             print_url(url.rstrip('\n'), Replacement)
+
+def multi_replace():   
+    with open(base_file) as f1, open(Replacement) as f2:
+        for x, y in zip(f1, f2):
+            print_url(x.rstrip('\n'), y.rstrip('\n'))
+
+if __name__ == "__main__":
+
+    if flag == "-f":
+        multi_replace()
+    elif flag == "-d":
+        single_replace()
+    else:
+        print("Wrong option")
