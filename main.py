@@ -42,6 +42,20 @@ def domain_replace(link, replacement):
     
     return link[:num] + temp
 
+#Save output
+def save_output(list1):
+    with open(output, "w") as f:
+        for item in list1:
+            f.write("%s\n" % item)
+
+#Remove uplicates of list
+def remove_dup(x):
+  return list(dict.fromkeys(x))
+
+#Remove duplicates from list and save it
+def Save_r(list_r):
+    save_output(remove_dup(list_r))
+
 
 def print_url(url, rpl):
 
