@@ -36,6 +36,9 @@ def domain_replace(link, replacement):
     temp = re.sub(rg, replacement, link[num:])
     check = re.search(rg, temp, re.M|re.I)
     
+    if replacement not in temp:
+        return False
+
     if check == None:
         return False
     
