@@ -1,6 +1,3 @@
-#--------------------------------------------------
-# python3 main.py file.txt example.com > result.txt
-#--------------------------------------------------
 
 import argparse
 import re
@@ -16,15 +13,17 @@ parser.add_argument("-v", help="value for domains replace", dest="value")
 
 args = parser.parse_args()
 
-base_file = args.file
+base_file = str(args.file)
 Replacement = args.rname
-domains = args.domains
+domains = str(args.domains)
 output = args.output
 value = args.value
 
+resultlist = []
+
 def domain_replace(link, replacement):
 
-    rg = r"\b([a-z0-9]+(-[a-z0-9]+)*\.)+(?!(cgi|html|js|php|pdf|jsp|txt|png|asp|aspx|css|rb|mp4|mpl|svg|log|xml|tar|zip|dat|db|csv|gif|rss|xhtml|ico|tmp|wmv))[a-z]{2,4}\b"
+    rg = r"\b([a-z0-9]+(-[a-z0-9]+)*\.)+(?!(cgi|html|js|php|pdf|jsp|txt|png|asp|aspx|css|rb|mp4|mpl|svg|log|xml|tar|zip|dat|db|csv|gif|rss|xhtml|ico|tmp|wmv))[a-z]{2,}\b"
 
     if "?" not in link:
         return False
@@ -56,29 +55,31 @@ def remove_dup(x):
 def Save_r(list_r):
     save_output(remove_dup(list_r))
 
+#Add url in list
+def add_url(url, rpl):
 
-def print_url(url, rpl):
+    m = domain_replace(url, rpl)
 
-    x = domain_replace(url, rpl)
-
-    if x != False:
-        print(x)
+    if m != False:
+        resultlist.append(m)
     
 def single_replace():
     with open(base_file) as f:
         for url in f:
-            print_url(url.rstrip('\n'), Replacement)
+            add_url(url.rstrip('\n'), Replacement)
+    Save_r(resultlist)
+
+    Save_r(resultlist)
 
 def multi_replace():   
-    with open(base_file) as f1, open(Replacement) as f2:
+    with open(base_file) as f1, open(domains) as f2:
         for x, y in zip(f1, f2):
-            print_url(x.rstrip('\n'), y.rstrip('\n'))
+            resultlist.append(x.rstrip('\n').replace(value, y.rstrip('\n')))
+    save_output(resultlist)
 
 if __name__ == "__main__":
 
-    if flag == "-f":
-        multi_replace()
-    elif flag == "-d":
-        single_replace()
+    if value is None:
+        single_replace();
     else:
-        print("Wrong option")
+        multi_replace()
